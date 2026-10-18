@@ -13,4 +13,29 @@ public class DetectionMathTests
 
         Assert.Equal(1f, result);
     }
+
+    [Fact]
+    public void IoU_SeparateBoxes_ReturnsZero()
+    {
+        //Arrange
+        var first = new Detection(0, "person", 0.9f, X: 0, Y: 0, Width: 10, Height: 10);
+        var second = new Detection(0, "person", 0.9f, X: 20, Y: 20, Width: 10, Height: 10);
+
+        //Act
+        float result = DetectionMath.IoU(first,second);
+
+        //Assert
+        Assert.Equal(0f,result);
+    }
+
+    [Fact]
+    public void IoU_HalfOverlap_ReturnsOneThird()
+    {
+        var first = new Detection(0, "person", 0.9f, X: 0, Y: 0, Width: 10, Height: 10);
+        var second = new Detection(0, "person", 0.9f, X: 5, Y: 0, Width: 10, Height: 10);
+
+        float result = DetectionMath.IoU(first, second);
+
+        Assert.Equal(1f / 3f, result, 5);
+    }
 }
