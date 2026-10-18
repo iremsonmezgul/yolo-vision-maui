@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="YoloVision.Core.Tests/YoloVision.Core.Tests.csproj" />
+  <Project Path="YoloVision.Core/YoloVision.Core.csproj" />
   <Project Path="YoloVisionApp/YoloVisionApp.csproj" />
 </Solution>
