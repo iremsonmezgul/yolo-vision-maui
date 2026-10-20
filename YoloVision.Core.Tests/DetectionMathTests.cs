@@ -38,4 +38,16 @@ public class DetectionMathTests
 
         Assert.Equal(1f / 3f, result, 5);
     }
+
+    [Fact]
+    public void NonMaxSuppression_OverlappingBoxesSameClass_KeepsHigherConfidence()
+    {
+        var weak = new Detection(0, "person", 0.6f, X: 0, Y: 0, Width: 10, Height: 10);
+        var strong = new Detection(0, "person", 0.9f, X: 1, Y: 1, Width: 10, Height: 10);
+
+        var result = DetectionMath.NonMaxSuppression(new[] { weak, strong }, iouThreshold: 0.45f, maxDetections: 100);
+
+        Assert.Single(result);
+        Assert.Equal(strong, result[0]);
+    }
 }
