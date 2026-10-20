@@ -12,4 +12,27 @@ public static class DetectionMath
         var intersection = interWidth * interHeight;
         return intersection / (a.Width * a.Height + b.Width * b.Height - intersection);
     }
+
+    public static List<Detection> NonMaxSuppression(IEnumerable<Detection> candidates, float iouThreshold, int maxDetections)
+    {
+        var sorted = candidates.OrderByDescending(d => d.Confidence);
+        var kept = new List<Detection>();
+
+        foreach (var candidate in sorted)
+        {
+            if (kept.Count == maxDetections)
+            {
+                break;
+            }
+
+            var overlapsKept = kept.Any(k => k.ClassId == candidate.ClassId && IoU(k, candidate) > iouThreshold);
+
+            if (!overlapsKept)
+            {
+                kept.Add(candidate);
+            }
+        }
+
+        return kept;
+    }
 }
