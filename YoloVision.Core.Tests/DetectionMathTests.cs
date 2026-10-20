@@ -82,6 +82,18 @@ public class DetectionMathTests
     }
 
     [Fact]
+    public void NonMaxSuppression_MoreThanMaxDetections_ReturnsAtMostMax()
+    {
+        var candidates = Enumerable.Range(0, 5)
+            .Select(i => new Detection(0, "person", 0.5f + i * 0.1f, X: i * 20, Y: 0, Width: 10, Height: 10))
+            .ToList();
+
+        var result = DetectionMath.NonMaxSuppression(candidates, iouThreshold: 0.45f, maxDetections: 3);
+
+        Assert.Equal(3, result.Count);
+    }
+
+    [Fact]
     public void NonMaxSuppression_Result_IsSortedByConfidenceDescending()
     {
         var low = new Detection(0, "person", 0.3f, X: 0, Y: 0, Width: 10, Height: 10);
