@@ -2,6 +2,7 @@ using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 using YoloVisionApp.Models;
+using YoloVision.Core;
 
 namespace YoloVisionApp.Controls
 {

@@ -77,4 +77,8 @@
 		<PackageReference Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.4.2.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\YoloVision.Core\YoloVision.Core.csproj" />
+	</ItemGroup>
+
 </Project>

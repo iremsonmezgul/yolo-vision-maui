@@ -1,5 +1,6 @@
-using System.Text.RegularExpressions;
 using Microsoft.ML.OnnxRuntime;
+using System.Text.RegularExpressions;
+using YoloVision.Core;
 using YoloVisionApp.Models;
 
 namespace YoloVisionApp.Services
@@ -185,35 +186,7 @@ namespace YoloVisionApp.Services
                 candidates.Add(new Detection(bestClass, label, bestScore, left, top, right - left, bottom - top));
             }
 
-            return NonMaxSuppression(candidates);
-        }
-
-        static List<Detection> NonMaxSuppression(List<Detection> candidates)
-        {
-            candidates.Sort((a, b) => b.Confidence.CompareTo(a.Confidence));
-
-            var kept = new List<Detection>();
-            foreach (var candidate in candidates)
-            {
-                if (kept.Count == MaxDetections)
-                    break;
-
-                var overlaps = kept.Any(k => k.ClassId == candidate.ClassId && IoU(k, candidate) > IouThreshold);
-                if (!overlaps)
-                    kept.Add(candidate);
-            }
-            return kept;
-        }
-
-        static float IoU(Detection a, Detection b)
-        {
-            var interWidth = Math.Min(a.X + a.Width, b.X + b.Width) - Math.Max(a.X, b.X);
-            var interHeight = Math.Min(a.Y + a.Height, b.Y + b.Height) - Math.Max(a.Y, b.Y);
-            if (interWidth <= 0 || interHeight <= 0)
-                return 0;
-
-            var intersection = interWidth * interHeight;
-            return intersection / (a.Width * a.Height + b.Width * b.Height - intersection);
+            return DetectionMath.NonMaxSuppression(candidates, IouThreshold, MaxDetections);
         }
 
         public void Dispose()

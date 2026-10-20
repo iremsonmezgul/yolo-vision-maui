@@ -1,4 +1,5 @@
 using YoloVisionApp.Models;
+using YoloVision.Core;
 
 namespace YoloVisionApp.Services
 {
